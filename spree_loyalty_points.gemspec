@@ -2,21 +2,21 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_loyalty_points'
-  s.version     = '1.2.0'
+  s.version     = '1.2.1'
   s.summary     = 'Add loyalty points to spree'
   s.description = 'To award loyalty points and add loyalty points payment method to spree'
   s.required_ruby_version = '>= 2.0.0'
   s.files = Dir['LICENSE', 'README.md', 'app/**/*', 'config/**/*', 'lib/**/*', 'db/**/*']
 
-  s.author    = ['Jatin Baweja', 'Sushant Mittal']
-  s.email     = 'info@vinsol.com'
-  s.homepage  = 'http://vinsol.com'
+  s.author    = ['Gaurav Sharma']
+  s.email     = 'gaurav2728@gmail.com'
+  s.homepage  = 'https://www.gauravatrai.com'
   s.license   = "MIT"
 
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 3.2.0.rc2'
+  s.add_dependency 'spree_core', '~> 4.2.5'
   s.add_development_dependency 'capybara', '~> 2.5'
   s.add_development_dependency 'coffee-rails', '~> 4.2.1'
   s.add_development_dependency 'database_cleaner', '~> 1.5.3'
