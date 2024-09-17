@@ -2,13 +2,13 @@ Spree.user_class.class_eval do
   validates :loyalty_points_balance, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   with_options foreign_key: :user_id do
-    has_many :loyalty_points_transactions
-    has_many :loyalty_points_debit_transactions
-    has_many :loyalty_points_credit_transactions
+    has_many :loyalty_points_transactions, class_name: 'Spree::LoyaltyPointsTransaction'
+    has_many :loyalty_points_debit_transactions, class_name: 'Spree::LoyaltyPointsDebitTransaction'
+    has_many :loyalty_points_credit_transactions, class_name: 'Spree::LoyaltyPointsCreditTransaction'
   end
 
   def loyalty_points_balance_sufficient?
-    loyalty_points_balance >= Spree::Config.loyalty_points_redeeming_balance
+    loyalty_points_balance >= Spree::Store.default.loyalty_points_redeeming_balance
   end
 
   def has_sufficient_loyalty_points?(order)
@@ -16,7 +16,7 @@ Spree.user_class.class_eval do
   end
 
   def loyalty_points_equivalent_currency
-    loyalty_points_balance * Spree::Config.loyalty_points_conversion_rate
+    loyalty_points_balance * Spree::Store.default.loyalty_points_conversion_rate
   end
 
 end
