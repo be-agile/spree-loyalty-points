@@ -15,6 +15,35 @@ module SpreeLoyaltyPoints
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+
+      Spree.user_class.class_eval do
+        validates :loyalty_points_balance, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+        with_options foreign_key: :user_id do
+          has_many :loyalty_points_transactions, class_name: 'Spree::LoyaltyPointsTransaction'
+          has_many :loyalty_points_debit_transactions, class_name: 'Spree::LoyaltyPointsDebitTransaction'
+          has_many :loyalty_points_credit_transactions, class_name: 'Spree::LoyaltyPointsCreditTransaction'
+        end
+
+        def loyalty_points_balance_sufficient?
+          loyalty_points_balance >= Spree::Store.default.loyalty_points_redeeming_balance
+        end
+
+        def has_sufficient_loyalty_points?(order)
+          loyalty_points_equivalent_currency >= order.total
+        end
+
+        def loyalty_points_equivalent_currency
+          loyalty_points_balance * Spree::Store.default.loyalty_points_conversion_rate
+        end
+
+      end
+    end
+
+    initializer 'spree_loyalty_points.autoloader' do |app|
+      if Rails.autoloaders.zeitwerk_enabled?
+        Rails.autoloaders.main.ignore("#{root}/app/overrides")
+      end
     end
 
     config.after_initialize do
