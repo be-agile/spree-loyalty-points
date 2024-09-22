@@ -1,0 +1,27 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+jp:
+  spree:
+    loyalty_points_balance: 保有ポイント
+    loyalty_points: ポイント
+    loyalty_points_debit: ポイント利用
+    loyalty_points_credit: ポイント付与
+    details: 詳細
+    min_amount_required_to_get_loyalty_points: "1回の注文でポイントを獲得するために必要な最低金額（商品価格のみ。配送料やその他の手数料は除く）"
+    loyalty_points_awarding_unit: "1ポイントが付与される購入金額"
+    loyalty_points_redeeming_balance: ポイントを利用するために必要な最低ポイント数
+    loyalty_points_conversion_rate: "ポイントを金額に換算する比率"
+    loyalty_points_award_period: 支払い後ポイントが付与されるまでの時間
+    back_to_user_profile: マイページに戻る
+    update_loyalty_points: ポイントを更新する
+    loyalty_points_earnable: "本注文に対して%{quantity}ポイントが付与されます"
+    insufficient_loyalty_points: 'ポイントが不足しています'
+    admin:
+      store:
+        loyalty_points_settings: "ポイント設定"
+        loyalty_points_awarding_unit: "1ポイントが付与される購入金額"
+        loyalty_points_redeeming_balance: "ポイント利用に必要な最小保有ポイント"
+        loyalty_points_conversion_rate: "ポイントを金額に換算する比率"
+        loyalty_points_award_period: "支払い後ポイントが付与されるまでの時間"
+        min_amount_required_to_get_loyalty_points: "ポイント付与に必要な最低注文金額"
