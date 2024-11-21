@@ -1,6 +1,6 @@
 Deface::Override.new(virtual_path: 'spree/users/show',
   name: 'add_loyalty_points_balance_to_account_page',
-  insert_after: "#user-info",
+  insert_after: ".account-page-user-info-item-store-credits",
   text: "
     <dl id='loyalty-points-info'>
       <dt><%= Spree.t(:loyalty_points_balance) %></dt>

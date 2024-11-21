@@ -22,7 +22,7 @@ describe Spree.user_class, type: :model do
 
   describe 'loyalty_points_balance_sufficient?' do
     before :each do
-      allow(Spree::Config).to receive(:loyalty_points_redeeming_balance).and_return(30)
+      allow(Spree::Store.default).to receive(:loyalty_points_redeeming_balance).and_return(30)
     end
 
     context "when loyalty_points_balance greater than redeeming balance" do
@@ -65,7 +65,7 @@ describe Spree.user_class, type: :model do
 
   describe 'has_sufficient_loyalty_points?' do
     let(:order) { create(:order_with_loyalty_points) }
-    
+
     before :each do
       order.total = BigDecimal.new(30.0, 2)
     end
@@ -113,7 +113,7 @@ describe Spree.user_class, type: :model do
     let (:conversion_rate) { 5.0 }
 
     before :each do
-      allow(Spree::Config).to receive(:loyalty_points_conversion_rate).and_return(conversion_rate)
+      allow(Spree::Store.default).to receive(:loyalty_points_conversion_rate).and_return(conversion_rate)
     end
 
     it "should return balance * conversion_rate" do

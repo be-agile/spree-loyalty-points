@@ -1,19 +1,20 @@
-Spree::Payment.class_eval do
+module Spree
+  module PaymentDecorator
+    def self.prepended(base)
+      base.include Spree::LoyaltyPoints
+      base.include Spree::Payment::LoyaltyPoints
 
-  include Spree::LoyaltyPoints
-  include Spree::Payment::LoyaltyPoints
+      base.validates :amount, numericality: { greater_than: 0 }, if: :by_loyalty_points?
+      base.validate :redeemable_user_balance, if: :by_loyalty_points?
+      base.scope :state_not, ->(s) { where('state != ?', s) }
 
-  validates :amount, numericality: { greater_than: 0 }, if: :by_loyalty_points?
-  validate :redeemable_user_balance, if: :by_loyalty_points?
-  scope :state_not, ->(s) { where('state != ?', s) }
+      fsm = base.state_machines[:state]
+      fsm.after_transition from: fsm.states.map(&:name) - [:completed], to: [:completed], do: :notify_paid_order
+      fsm.after_transition from: fsm.states.map(&:name) - [:completed], to: [:completed], do: :redeem_loyalty_points, if: :by_loyalty_points?
+      fsm.after_transition from: [:completed], to: fsm.states.map(&:name) - [:completed], do: :return_loyalty_points, if: :by_loyalty_points?
+    end
 
-  fsm = self.state_machines[:state]
-  fsm.after_transition from: fsm.states.map(&:name) - [:completed], to: [:completed], do: :notify_paid_order
-
-  fsm.after_transition from: fsm.states.map(&:name) - [:completed], to: [:completed], do: :redeem_loyalty_points, if: :by_loyalty_points?
-  fsm.after_transition from: [:completed], to: fsm.states.map(&:name) - [:completed] , do: :return_loyalty_points, if: :by_loyalty_points?
-
-  private
+    private
 
     def invalidate_old_payments
       return if store_credit? || by_loyalty_points?
@@ -31,5 +32,7 @@ Spree::Payment.class_eval do
     def all_payments_completed?
       order.payments.state_not('invalid').all? { |payment| payment.completed? }
     end
-
+  end
 end
+
+Spree::Payment.prepend Spree::PaymentDecorator if Spree::Payment.included_modules.exclude?(Spree::PaymentDecorator)

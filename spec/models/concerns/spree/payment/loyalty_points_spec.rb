@@ -84,7 +84,7 @@ shared_examples_for "Payment::LoyaltyPoints" do
   end
 
   describe 'by_loyalty_points?' do
-    
+
     let(:loyalty_points_payment_method) { Spree::PaymentMethod::LoyaltyPoints.create!(active: true, name: 'LoyaltyPoints') }
     let(:check_payment_method) { Spree::PaymentMethod::Check.create!(active: true, name: 'Check') }
 
@@ -117,7 +117,7 @@ shared_examples_for "Payment::LoyaltyPoints" do
   describe 'redeemable_loyalty_points_balance?' do
 
     before :each do
-      allow(Spree::Config).to receive(:loyalty_points_redeeming_balance).and_return(30)
+      allow(Spree::Store.default).to receive(:loyalty_points_redeeming_balance).and_return(30)
     end
 
     context "when amount greater than redeeming balance" do
@@ -177,12 +177,12 @@ shared_examples_for "Payment::LoyaltyPoints" do
 
       before :each do
         allow(resource_instance).to receive(:redeemable_loyalty_points_balance?).and_return(false)
-        allow(Spree::Config).to receive(:loyalty_points_redeeming_balance).and_return(30)
+        allow(Spree::Store.default).to receive(:loyalty_points_redeeming_balance).and_return(30)
         allow(resource_instance.order.user).to receive(:loyalty_points_balance).and_return(20)
       end
 
       it "should add error to loyalty_points_balance" do
-        min_balance = Spree::Config.loyalty_points_redeeming_balance
+        min_balance = Spree::Store.default.loyalty_points_redeeming_balance
         resource_instance.send(:redeemable_user_balance)
         expect(resource_instance.errors[:loyalty_points_balance]).to eq(["should be atleast #{ min_balance.to_s + " " + "point".pluralize(min_balance) } for redeeming Loyalty Points"])
       end
