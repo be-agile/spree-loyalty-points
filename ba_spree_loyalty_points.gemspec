@@ -1,22 +1,28 @@
 # encoding: UTF-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'spree_loyalty_points/version'
+
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
-  s.name        = 'spree_loyalty_points'
-  s.version     = '1.2.1'
-  s.summary     = 'Add loyalty points to spree'
-  s.description = 'To award loyalty points and add loyalty points payment method to spree'
-  s.required_ruby_version = '>= 2.0.0'
+  s.name        = 'ba_spree_loyalty_points'
+  s.version     = SpreeLoyaltyPoints::VERSION
+  s.summary     = 'Add loyalty points to spree (be agile fork)'
+  s.description = 'To award loyalty points and add loyalty points payment method to spree.  Compatible with Ruby 3.1, Rails 7.1 and Spree 4.10.'
+  s.required_ruby_version = '>= 3.1.4'
   s.files = Dir['LICENSE', 'README.md', 'app/**/*', 'config/**/*', 'lib/**/*', 'db/**/*']
 
-  s.author    = ['Gaurav Sharma']
-  s.email     = 'gaurav2728@gmail.com'
-  s.homepage  = 'https://www.gauravatrai.com'
-  s.license   = "MIT"
+  s.author      = 'be agile Co., Ltd.'
+  s.email       = 'develop@be-agile.jp'
+  s.homepage    = 'https://github.com/be-agile/ba_spree_loyalty_points'
+  s.licenses    = ['AGPL-3.0-or-later', 'BSD-3-Clause']
 
   s.require_path = 'lib'
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 4.10.1'
+  s.add_dependency 'spree_backend', '>= 4.8.0'
+  s.add_dependency 'spree_frontend', '>= 4.8.0'
   s.add_development_dependency 'capybara', '~> 2.5'
   s.add_development_dependency 'coffee-rails', '~> 4.2.1'
   s.add_development_dependency 'database_cleaner', '~> 1.5.3'
